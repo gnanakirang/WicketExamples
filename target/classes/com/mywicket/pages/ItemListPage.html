@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Shopping site - Item List</title>
+<link href="style.css" rel="stylesheet" />
+</head>
+<body>
+	<div id="container">
+		<div id="header"></div>
+		<div id="contents">
+			<div id="main">
+			<p><a wicket:id="addNewItem"	href="#">Refresh Item List</a></p>
+				<div wicket:id="items" class="item">
+					<h3 wicket:id="name">Gouda</h3>
+					<p wicket:id="description">Gouda is a Dutch...</p>
+					<p>
+						<span wicket:id="price">$1.99</span> <a wicket:id="addToBasket"
+							href="#">add to Basket</a>
+					</p>
+				</div>
+				<div wicket:id="navigator"></div>
+			</div>
+			<div id="basket">
+				<h3>Your selection</h3>
+				<table>
+					<tbody>
+						<tr wicket:id="selectedItems">
+							<td wicket:id="name">Gouda</td>
+							<td wicket:id="price">2.99</td>
+							<td> x <input wicket:id="numberOfQuantity" type="text" maxlength="2" size="2"/></td>
+							<!-- <td wicket:id="numberOfQuantity">1</td> -->
+							<td wicket:id="quantityTotal">1</td>
+							<td><a wicket:id="remove" href="#">remove</a></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr class="total">
+							<th>Total</th>
+							<td wicket:id="grandTotal">$1.99</td>
+							<td>&nbsp;</td>
+						</tr>
+					</tfoot>
+				</table>
+				<input type="button" wicket:id="checkout" value="Check Out" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>
