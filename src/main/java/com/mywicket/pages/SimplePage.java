@@ -18,12 +18,13 @@ public class SimplePage extends WebPage {
 	final static Logger logger = LoggerFactory.getLogger(SimplePage.class);
 	int counter = 0;
 	public SimplePage(final PageParameters parameters) {
+		
 		logger.info("In SimplePage");
 		add(new Label("msg", helloService.getHelloWorldMsg()));
 		add(new Label("counter",new PropertyModel<String>(this, "counter")));
 		
-		add(new Link("link"){
-
+		add(new Link<Object>("link"){
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick() {
 				++counter;				
@@ -31,8 +32,8 @@ public class SimplePage extends WebPage {
 			
 		});
 		
-		add(new Link("linkUserPage"){
-
+		add(new Link<Object>("linkUserPage"){
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick() {
 				setResponsePage(UserPage.class);				
@@ -40,7 +41,8 @@ public class SimplePage extends WebPage {
 			
 		});
 		
-		add(new Link("linkEchoPage"){
+		add(new Link<Object>("linkEchoPage"){
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
@@ -49,11 +51,20 @@ public class SimplePage extends WebPage {
 			
 		});
 		
-		add(new Link("linkItemListPage"){
-
+		add(new Link<Object>("linkItemListPage"){
+			private static final long serialVersionUID = 1L;
 			@Override
 			public void onClick() {
 				setResponsePage(ItemListPage.class);				
+			}
+			
+		});
+		
+		add(new Link<Object>("gRahaelLineChartPage"){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick() {
+				setResponsePage(RahaelLineChartPage.class);				
 			}
 			
 		});

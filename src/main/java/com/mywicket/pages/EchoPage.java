@@ -14,13 +14,15 @@ import org.wicketstuff.annotation.strategy.MountQueryString;
 public class EchoPage extends WebPage {
 
 	public Label label;
-	public TextField field;
+	public TextField<String> field;
 	
 	public EchoPage() {
-		Form form = new Form("echoForm");
-		field = new TextField("field", new Model(""));
+		Form<Object> form = new Form<Object>("echoForm");
+		field = new TextField<String>("field", new Model<String>(""));
 		form.add(field);
 		form.add(new Button("button"){
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void onSubmit(){
 				String value = (String)field.getModelObject();
@@ -29,6 +31,6 @@ public class EchoPage extends WebPage {
 			}
 		});
 		add(form);
-		add(label = new Label("message", new Model("")));
+		add(label = new Label("message", new Model<String>("")));
 	}
 }
