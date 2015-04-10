@@ -1,4 +1,4 @@
-package com.mywicket.data;
+package com.mywicket.data.shoppingcart;
 
 import java.io.Serializable;
 import java.util.Date;

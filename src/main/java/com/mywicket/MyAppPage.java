@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
-import com.mywicket.data.Item;
-import com.mywicket.data.ShoppingBasket;
+import com.mywicket.data.shoppingcart.Item;
+import com.mywicket.data.shoppingcart.ShoppingBasket;
 import com.mywicket.services.ItemService;
 import com.mywicket.services.UserService;
 

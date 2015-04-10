@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mywicket.data.UserData;
+import com.mywicket.data.shoppingcart.UserData;
 
 @Service
 public class UserServiceImpl implements UserService {

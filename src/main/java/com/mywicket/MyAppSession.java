@@ -3,7 +3,7 @@ package com.mywicket;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebSession;
 
-import com.mywicket.data.ShoppingBasket;
+import com.mywicket.data.shoppingcart.ShoppingBasket;
 
 public class MyAppSession extends WebSession {
 

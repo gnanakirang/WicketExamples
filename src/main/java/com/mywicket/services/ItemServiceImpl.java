@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.mywicket.data.Item;
-import com.mywicket.data.ItemType;
+import com.mywicket.data.shoppingcart.Item;
+import com.mywicket.data.shoppingcart.ItemType;
 
 @Service
 public class ItemServiceImpl implements ItemService {

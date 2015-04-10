@@ -15,7 +15,7 @@ import org.wicketstuff.annotation.mount.MountPath;
 import org.wicketstuff.annotation.strategy.MountQueryString;
 
 import com.mywicket.MyAppPage;
-import com.mywicket.data.Item;
+import com.mywicket.data.shoppingcart.Item;
 
 @MountPath(path = "itemListPage")
 @MountQueryString
