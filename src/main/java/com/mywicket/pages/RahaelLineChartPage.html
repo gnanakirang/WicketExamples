@@ -28,15 +28,19 @@
 		var txtattr = { font: "20px 'Fontin Sans', Fontin-Sans, sans-serif" },
 			labeltxtattr = { font: "10px 'Fontin Sans', Fontin-Sans, sans-serif" };
 		
-        r.text(320, 40, "Symbols, axis and hover effect").attr(txtattr);   
         
-		r.path( "M100,100 L150,100" ).attr({stroke:'#F00'});
-		r.text(50, 100, "First Line").attr(labeltxtattr); 
-		r.path( "M100,120 L150,120" ).attr({stroke:'#0F0'});
-		r.text(50, 120, "Second Line").attr(labeltxtattr); 
 		
 		if(lines != undefined) {
 			lines.remove();
+		}else {
+			//This block will be executed only on first time of this function call
+			//
+			r.text(320, 40, "Symbols, axis and hover effect").attr(txtattr);   
+	        
+			r.path( "M100,100 L150,100" ).attr({stroke:'#F00'});
+			r.text(50, 100, "First Line").attr(labeltxtattr); 
+			r.path( "M100,120 L150,120" ).attr({stroke:'#0F0'});
+			r.text(50, 120, "Second Line").attr(labeltxtattr); 
 		}
 		
         lines = r.linechart(100, 130, 450, 320, 

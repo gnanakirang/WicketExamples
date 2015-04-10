@@ -26,7 +26,7 @@ public class RahaelLineChartPage extends MyAppPage {
 					target.appendJavascript("drawRaphaelLineChart([" + b+" , "+a + "]);");
 				}
 				
-				logger.info("Counter: ",counter++);
+				logger.info("Counter: {}",counter++);
 				
 			}			
 		};
