@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <title>gRaphael Line Charts</title>
         <link rel="stylesheet" href="css/demo.css" type="text/css" media="screen" charset="utf-8">
-        <link rel="stylesheet" href="css/demo-print.css" type="text/css" media="print" charset="utf-8">
         <script src="lib/raphael-min.js" type="text/javascript" charset="utf-8"></script>
         <script src="lib/g.raphael.js" type="text/javascript"></script>
         <script src="lib/g.line.js" type="text/javascript" charset="utf-8"></script>
@@ -21,12 +20,12 @@
 	</div>	
 	<script type="text/javascript" charset="utf-8">   
 	//window.onload = drawRaphaelLineChart([[23, 12, 32, 23, 15, 17, 27, 22, 34, 28, 15, 12], [18, 10, 20, 30, 25, 15, 28, 24, 33, 29, 14, 10]]);
-	
+	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+	var r = Raphael("holder"), lines;
 	function drawRaphaelLineChart(valuesy){ 
 		
-		var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-		var r = Raphael("holder"), 
-			txtattr = { font: "20px 'Fontin Sans', Fontin-Sans, sans-serif" },
+		
+		var txtattr = { font: "20px 'Fontin Sans', Fontin-Sans, sans-serif" },
 			labeltxtattr = { font: "10px 'Fontin Sans', Fontin-Sans, sans-serif" };
 		
         r.text(320, 40, "Symbols, axis and hover effect").attr(txtattr);   
@@ -36,7 +35,11 @@
 		r.path( "M100,120 L150,120" ).attr({stroke:'#0F0'});
 		r.text(50, 120, "Second Line").attr(labeltxtattr); 
 		
-        var lines = r.linechart(100, 130, 450, 320, 
+		if(lines != undefined) {
+			lines.remove();
+		}
+		
+        lines = r.linechart(100, 130, 450, 320, 
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], 
             valuesy, 
             { axisxstep: 11, nostroke: false, axis: "0 0 1 1", symbol: "circle", smooth: true, colors: ['#F00', '#0F0']});
