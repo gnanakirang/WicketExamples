@@ -4,6 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
 <title>Insert title here</title>
+    <script src="lib/raphael-min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="lib/g.raphael.js" type="text/javascript"></script>
+    <script src="lib/g.line.js" type="text/javascript" charset="utf-8"></script>
 <style>
 body {
 	padding-left: 11em;
@@ -94,36 +97,49 @@ table>thead>tr>td {
 .CellNoBorder {
 	display: table-cell;
 }
+
+
+.raphaelChartDiv {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px #666;
+    background: #ddd url(../images/bg.png);
+    margin: 0 auto;
+    width: 640px;
+    height: 480px;
+}
+#holder {
+    width: 640px;
+    height: 480px;
+}
 </style>
 </head>
 <body>
 	<h1>Sprint Burnout Chart</h1>
 	<div wicket:id="sprintInputGroup">
-		<form wicket:id="sprintForm">
-			<div class="Row">
-				<div class="CellNoBorderBold">Sprint Start Date: </div>
-				<div class="CellNoBorder"><input type="text" wicket:id="sprintStartDate" /></div>
-			</div>
-			<div class="Row">
-				<div class="CellNoBorderBold">Sprint End Date: </div>
-				<div class="CellNoBorder"><input type="text" wicket:id="sprintEndDate" /></div>
-			</div>
-			<div class="Row">
-				<div class="CellNoBorderBold">Sprint Working Days: </div>
-				<div class="CellNoBorder"><input type="text" wicket:id="totalWorkingDays" /></div>
-			</div>
-			<div class="Row">
-				<div class="CellNoBorderBold">Hours Per Day: </div>
-				<div class="CellNoBorder"><select wicket:id="hoursPerDay"></select></div>
-			</div>
-			<div class="Row">
-				<div class="CellNoBorderBold">Total Number of Resources: </div>
-				<div class="CellNoBorder"><input type="text" wicket:id="numberOfResources" /></div>
-			</div>
-			<div class="Row"><div class="CellNoBorder"></div></div>
-			<div class="Row"><input type="submit" wicket:id = "enterActualslink" value="Enter Hours Per Day" /></div>
-			<div class="Row"><div class="CellNoBorder"></div></div>
-		</form>		
+		<div class="Row">
+			<div class="CellNoBorderBold">Sprint Start Date: </div>
+			<div class="CellNoBorder"><input type="text" wicket:id="sprintStartDate" /></div>
+		</div>
+		<div class="Row">
+			<div class="CellNoBorderBold">Sprint End Date: </div>
+			<div class="CellNoBorder"><input type="text" wicket:id="sprintEndDate" /></div>
+		</div>
+		<div class="Row">
+			<div class="CellNoBorderBold">Sprint Working Days: </div>
+			<div class="CellNoBorder"><input type="text" wicket:id="totalWorkingDays" /></div>
+		</div>
+		<div class="Row">
+			<div class="CellNoBorderBold">Hours Per Day: </div>
+			<div class="CellNoBorder"><select wicket:id="hoursPerDay"></select></div>
+		</div>
+		<div class="Row">
+			<div class="CellNoBorderBold">Total Number of Resources: </div>
+			<div class="CellNoBorder"><input type="text" wicket:id="numberOfResources" /></div>
+		</div>
+		<div class="Row"><div class="CellNoBorder"></div></div>
+		<div class="Row"><input type="submit" wicket:id = "enterActualslink" value="Enter Remaining Hours after Day" /></div>
+		<div class="Row"><div class="CellNoBorder"></div></div>
 	</div>
 	<br>
 	<div wicket:id="hoursInputGroup">
@@ -163,12 +179,12 @@ table>thead>tr>td {
 			        		</div>
 			        		<div class ="Row">
 						        <div class="CellNoBorder">
-						            <p><input wicket:id="estimatedHours" type="text" maxlength="2" size="2"/></p>
+						            <p><input wicket:id="estimatedHours" type="text" size="1"/></p>
 						        </div>
 			        		</div>
 			        		<div class ="Row">
 						        <div class="CellNoBorder">
-						            <p><input wicket:id="actualBurnedHours" type="text" maxlength="2" size="2"/></p>
+						            <p><input wicket:id="actualBurnedHours" type="text" size="1"/></p>
 						        </div>
 			        		</div>
 			        	</div>					
@@ -180,7 +196,7 @@ table>thead>tr>td {
 		<!-- <div class="Row">
 			<div class="CellNoBorderBold">Sprint Start Date: </div>
 			<div class="CellNoBorder"  wicket:id = "enteredStartDate"></div>
-		</div> -->
+		</div><div id="holder"></div>	 -->
 		<br>
 			<form wicket:id="actionButtons">
                 <p>
@@ -188,5 +204,9 @@ table>thead>tr>td {
                 </p>
             </form>
 	</div>
+	<div id="holder"></div>
+		
+	
+	<script src="lib/raphaelLineChart.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

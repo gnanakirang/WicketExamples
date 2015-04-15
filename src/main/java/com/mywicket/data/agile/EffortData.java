@@ -8,7 +8,10 @@ public class EffortData implements Serializable {
 	private Date date;
 	private String sDate;
 	private double estimatedHours;
-	private double actualBurnedHours;	
+	private double actualBurnedHours;
+	
+	private double remainingEstHrs;
+	private double remainingActualHrs;
 	
 	public EffortData(){}
 	
@@ -49,6 +52,23 @@ public class EffortData implements Serializable {
 	public void setActualBurnedHours(double actualBurnedHours) {
 		this.actualBurnedHours = actualBurnedHours;
 	}
+	
+	public double getRemainingEstHrs() {
+		return remainingEstHrs;
+	}
+
+	public void setRemainingEstHrs(double remainingEstHrs) {
+		this.remainingEstHrs = remainingEstHrs;
+	}
+
+	public double getRemainingActualHrs() {
+		return remainingActualHrs;
+	}
+
+	public void setRemainingActualHrs(double remainingActualHrs) {
+		this.remainingActualHrs = remainingActualHrs;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -78,7 +98,8 @@ public class EffortData implements Serializable {
 	public String toString() {
 		return "EffortData [date=" + date + ", sDate=" + sDate
 				+ ", estimatedHours=" + estimatedHours + ", actualBurnedHours="
-				+ actualBurnedHours + "]";
+				+ actualBurnedHours + ", remainingEstHrs=" + remainingEstHrs
+				+ ", remainingActualHrs=" + remainingActualHrs + "]";
 	}
 	
 	
