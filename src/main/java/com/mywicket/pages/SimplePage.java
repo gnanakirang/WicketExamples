@@ -68,6 +68,15 @@ public class SimplePage extends WebPage {
 			}
 			
 		});
+		
+		add(new Link<Object>("sprintGraphPage"){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void onClick() {
+				setResponsePage(SprintGraphPage.class);				
+			}
+			
+		});
 
 	}
 

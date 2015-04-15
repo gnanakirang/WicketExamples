@@ -23,7 +23,13 @@ public class RahaelLineChartPage extends MyAppPage {
 				if (counter % 2 == 0){
 					target.appendJavascript("drawRaphaelLineChart([" + a+" , "+b + "]);");
 				}else {
-					target.appendJavascript("drawRaphaelLineChart([" + b+" , "+a + "]);");
+					//drawRaphaelLineChart(y_values, x_values, graphTitle, lineNames, colorsarray, x_labels, axisxstep)
+					target.appendJavascript("drawRaphaelLineChart([[234,123,189,203,178,150,210],[0,180,165,201,145,189,160]],"
+							+ " [0,1,2,3,4,5,6],"
+							+ "'Line graph showing sales graph for last week',"
+							+ "['Shirts', 'Trousers'],"
+							+ "['#333366', '#006600'],"
+							+ "['Mon','Tue','Wed','Thr','Fri','Sat','Sun'], 6);");
 				}
 				
 				logger.info("Counter: {}",counter++);

@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+<title>Insert title here</title>
+<style>
+body {
+	padding-left: 11em;
+	color: purple;
+	background-color: #F5ECCE
+}
+
+h1 {
+	font-family: Helvetica, Geneva, Arial, SunSans-Regular, sans-serif;
+	font-weight : bold;
+	text-align: center;
+	font-weight: bold;
+}
+
+label {
+	background-color: #eee;
+	padding: 4px;
+}
+
+.feedbackPanelERROR {
+	color: red;
+}
+
+div.container {
+	padding-left: 10px;
+	padding-right: 10px;
+	width: 500px;
+	display: table;
+	border: solid;
+	border-width: thin;
+}
+
+div.header {
+	width: 80px;
+	float: left;
+	border-width: thin;
+}
+
+div.scroll {
+	max-width: 420px;
+	max-height: 200px;
+	float: left;
+	overflow: auto;
+}
+
+table>thead>tr>td {
+	border-right: 1px solid #666666;
+	background-color: #cccccc;
+}
+
+.Table {
+	display: table;
+}
+
+.Title {
+	display: table-caption;
+	text-align: center;
+	font-weight: bold;
+	font-size: larger;
+}
+
+.Heading {
+	display: table-row;
+	font-weight: bold;
+	text-align: center;
+}
+
+.RowTop {
+	display: table-row;
+}
+
+.Row {
+	display: table-row;
+}
+
+.Cell {
+	display: table-cell;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.CellNoBorderBold {
+	display: table-cell;
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+.CellNoBorder {
+	display: table-cell;
+}
+</style>
+</head>
+<body>
+	<h1>Sprint Burnout Chart</h1>
+	<div wicket:id="sprintInputGroup">
+		<form wicket:id="sprintForm">
+			<div class="Row">
+				<div class="CellNoBorderBold">Sprint Start Date: </div>
+				<div class="CellNoBorder"><input type="text" wicket:id="sprintStartDate" /></div>
+			</div>
+			<div class="Row">
+				<div class="CellNoBorderBold">Sprint End Date: </div>
+				<div class="CellNoBorder"><input type="text" wicket:id="sprintEndDate" /></div>
+			</div>
+			<div class="Row">
+				<div class="CellNoBorderBold">Sprint Working Days: </div>
+				<div class="CellNoBorder"><input type="text" wicket:id="totalWorkingDays" /></div>
+			</div>
+			<div class="Row">
+				<div class="CellNoBorderBold">Hours Per Day: </div>
+				<div class="CellNoBorder"><select wicket:id="hoursPerDay"></select></div>
+			</div>
+			<div class="Row">
+				<div class="CellNoBorderBold">Total Number of Resources: </div>
+				<div class="CellNoBorder"><input type="text" wicket:id="numberOfResources" /></div>
+			</div>
+			<div class="Row"><div class="CellNoBorder"></div></div>
+			<div class="Row"><input type="submit" wicket:id = "enterActualslink" value="Enter Hours Per Day" /></div>
+			<div class="Row"><div class="CellNoBorder"></div></div>
+		</form>		
+	</div>
+	<br>
+	<div wicket:id="hoursInputGroup">
+		<div class="container">
+			<div class="header">
+			    <div class="Heading">
+			        <div class="Cell">
+			        	<div class="Table">
+			        		<div class ="Row">
+			        			<div class="CellNoBorder">
+			            			<p>Date (day)</p>
+			        			</div>
+			        		</div>
+			        		<div class ="Row">
+						        <div class="CellNoBorder">
+						            <p>Estimated</p>
+						        </div>
+			        		</div>
+			        		<div class ="Row">			        		
+						        <div class="CellNoBorder">
+						            <p>Actual</p>
+						        </div>
+			        		</div>
+			        	</div>
+			        </div>
+			    </div>
+			</div>
+			
+			<div class="scroll">
+				<div class="RowTop">
+					<div class="Cell"  wicket:id="effortData">
+			        	<div class="Table">
+			        		<div class ="Row">
+			        			<div class="CellNoBorder">
+			            			<p wicket:id="sDate">01/01</p>
+			        			</div>
+			        		</div>
+			        		<div class ="Row">
+						        <div class="CellNoBorder">
+						            <p><input wicket:id="estimatedHours" type="text" maxlength="2" size="2"/></p>
+						        </div>
+			        		</div>
+			        		<div class ="Row">
+						        <div class="CellNoBorder">
+						            <p><input wicket:id="actualBurnedHours" type="text" maxlength="2" size="2"/></p>
+						        </div>
+			        		</div>
+			        	</div>					
+					</div>
+				</div>
+			</div>		
+		</div>
+		<div wicket:id="navigator"></div>
+		<!-- <div class="Row">
+			<div class="CellNoBorderBold">Sprint Start Date: </div>
+			<div class="CellNoBorder"  wicket:id = "enteredStartDate"></div>
+		</div> -->
+		<br>
+			<form wicket:id="actionButtons">
+                <p>
+                    <input wicket:id="saveButton" id="saveButton" type="submit" value="View Burnout Chart" />
+                </p>
+            </form>
+	</div>
+</body>
+</html>

@@ -3,14 +3,14 @@ package com.mywicket.data.agile;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Sprint  implements Serializable{
+public class SprintData  implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private Date startDate;
+	private Date startDate = new Date();
 	private Date endDate;
 	private int totalWorkingDays;
 	private int hoursPerDay;
 	private int numberOfResources;
-	private BurnoutChart burnoutChart;
+	private BurnoutChart burnoutChart = new BurnoutChart();
 	
 	public Date getStartDate() {
 		return startDate;
@@ -67,7 +67,7 @@ public class Sprint  implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Sprint other = (Sprint) obj;
+		SprintData other = (SprintData) obj;
 		if (endDate == null) {
 			if (other.endDate != null)
 				return false;
@@ -96,5 +96,14 @@ public class Sprint  implements Serializable{
 	public double getEstimateWorkingHrsPerDay(){
 		return hoursPerDay*numberOfResources;
 	}
+	@Override
+	public String toString() {
+		return "SprintData [startDate=" + startDate + ", endDate=" + endDate
+				+ ", totalWorkingDays=" + totalWorkingDays + ", hoursPerDay="
+				+ hoursPerDay + ", numberOfResources=" + numberOfResources
+				+ ", burnoutChart=" + burnoutChart.toString() + "]";
+	}
+	
+	
 	
 }

@@ -16,7 +16,7 @@
 		<spring-version>3.0.5.RELEASE</spring-version>
 		<wicket-version>1.4.17</wicket-version>
 		<release_version>1.0</release_version>
-		<!-- release.javadoc.root.path>D:/softwares/apache-tomcat-6.0.20/webapps/api-documentation/</release.javadoc.root.path-->
+		<!-- release.javadoc.root.path>D:/softwares/apache-tomcat-6.0.20/webapps/api-documentation/</release.javadoc.root.path -->
 		<!-- javadoc.root.path>D:/api-documentation/</javadoc.root.path -->
 	</properties>
 
@@ -35,6 +35,11 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-spring</artifactId>
+			<version>${wicket-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-datetime</artifactId>
 			<version>${wicket-version}</version>
 		</dependency>
 
@@ -60,7 +65,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.6</version>
+			<version>1.5.8</version>
 		</dependency>
 
 	</dependencies>
@@ -94,11 +99,12 @@
 					<optimise>true</optimise>
 					<debug>true</debug>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
-		<!-- Javadoc generation and deploying Javadoc and web application to Tomcat on mvn install -->
+		<!-- Javadoc generation and deploying Javadoc and web application to Tomcat 
+			on mvn install -->
 		<profile>
 			<id>localTomcatJavadocDeploy</id>
 			<build>

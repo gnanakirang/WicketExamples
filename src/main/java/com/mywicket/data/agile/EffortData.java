@@ -3,16 +3,20 @@ package com.mywicket.data.agile;
 import java.io.Serializable;
 import java.util.Date;
 
-public class EffortCoordinate implements Serializable {
+public class EffortData implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date date;
 	private String sDate;
 	private double estimatedHours;
 	private double actualBurnedHours;	
 	
-	public EffortCoordinate(){}
+	public EffortData(){}
 	
-	public EffortCoordinate(Date date, String sDate, double estimatedHours,
+	public EffortData(Date date){
+		this.date = date;
+	}
+	
+	public EffortData(Date date, String sDate, double estimatedHours,
 			double actualBurnedHours) {
 		super();
 		this.date = date;
@@ -60,7 +64,7 @@ public class EffortCoordinate implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		EffortCoordinate other = (EffortCoordinate) obj;
+		EffortData other = (EffortData) obj;
 		if (date == null) {
 			if (other.date != null)
 				return false;
@@ -68,6 +72,13 @@ public class EffortCoordinate implements Serializable {
 		else if (!date.equals(other.date))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "EffortData [date=" + date + ", sDate=" + sDate
+				+ ", estimatedHours=" + estimatedHours + ", actualBurnedHours="
+				+ actualBurnedHours + "]";
 	}
 	
 	

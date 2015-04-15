@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
+import com.mywicket.data.agile.SprintData;
 import com.mywicket.data.shoppingcart.Item;
 import com.mywicket.data.shoppingcart.ShoppingBasket;
 import com.mywicket.services.ItemService;
@@ -26,6 +27,14 @@ public abstract class MyAppPage extends WebPage {
 	
 	public ShoppingBasket getShoppingBasket() {
 		return getCurrentSession().getShoppingBasket();
+	}
+	
+	public SprintData getSprintData(){
+		return getCurrentSession().getSprintData();
+	}
+	
+	public void setSprintData(SprintData sprintData) {
+		getCurrentSession().setSprintData(sprintData);
 	}
 
 	public ItemService getItemService() {
