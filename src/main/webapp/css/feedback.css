@@ -1,0 +1,32 @@
+
+.feedbackPanelERROR {
+    color: red;
+    list-style: circle;
+    font-weight: bold;
+}
+
+.feedbackPanelINFO {
+    color: green;
+    list-style: circle;
+    font-weight: bold;
+}
+.feedbacklabel {
+    font-weight: bold;
+}
+
+.feedbacklabel.info {
+    color: green;
+}
+
+.feedbacklabel.error {
+    color: red;
+}
+
+.formcomponent.invalid {
+    border: 2px solid red;
+    color: red;
+}
+
+.formcomponent.valid {
+    color: green;
+}

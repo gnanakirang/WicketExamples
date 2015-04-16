@@ -1,5 +1,12 @@
 var r = Raphael("holder"), lines, rtextarray = [], rpatharray = [], rtitle;
 
+function clearRaphaelLineChart(){
+	if(r != undefined) {
+		r.remove();
+		r = Raphael("holder");
+	}	
+}
+
 function drawRaphaelLineChart(y_values, x_values, graphTitle, lineNames, colorsarray, x_labels, axisxstep){
 	if (arguments.length < 2){
 		x_values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -71,8 +78,7 @@ function drawRaphaelLineChart(y_values, x_values, graphTitle, lineNames, colorsa
         var x_label = x_labels[ii];
         lines.axis[0].text[ii].rotate(75);
         lines.axis[0].text[ii].attr({'text': x_label});
-    }
-  	      
-    alert('ok-end');
+    } 
+    
     return r;
 }

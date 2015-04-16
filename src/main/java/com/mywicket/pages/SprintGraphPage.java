@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.OnChangeAjaxBehavior;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -20,9 +19,12 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.RangeValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,17 @@ public class SprintGraphPage extends MyAppPage {
 	@SuppressWarnings("all")
 	public SprintGraphPage() {
 		super();
-		 
+		
+		final FeedbackPanel feedbackPanel = new FeedbackPanel("feedback") {
+			@Override
+			protected void onConfigure() {
+				super.onConfigure();
+				setVisible(anyMessage());
+			}
+		};
+		feedbackPanel.setOutputMarkupPlaceholderTag(true);
+		feedbackPanel.setOutputMarkupId(true);
+		
 		final WebMarkupContainer sprintInputGroup = new WebMarkupContainer("sprintInputGroup");
 		sprintInputGroup.setOutputMarkupPlaceholderTag(true);
 		add(sprintInputGroup);
@@ -54,43 +66,98 @@ public class SprintGraphPage extends MyAppPage {
 		hoursInputgroup.setOutputMarkupId(true);
 		hoursInputgroup.setOutputMarkupPlaceholderTag(true);
 		add(hoursInputgroup);
-		
-		/*final WebMarkupContainer raphaelBurnoutChart = new WebMarkupContainer(
-				"burnoutChart");
-		raphaelBurnoutChart.setVisible(true);
-		raphaelBurnoutChart.setOutputMarkupPlaceholderTag(true);
-		raphaelBurnoutChart.setOutputMarkupId(true).setMarkupId("holder");		
-		add(raphaelBurnoutChart);*/
 
-		prepareSprintBasicDialoguePanel(sprintInputGroup, hoursInputgroup);		
+		prepareSprintBasicDialoguePanel(sprintInputGroup, hoursInputgroup,feedbackPanel);		
 		prepareHoursInputPanel(hoursInputgroup, null);
-		addHoursLink(sprintInputGroup, hoursInputgroup);
 		
 	}
 
 	@SuppressWarnings("all")
 	private void prepareSprintBasicDialoguePanel(
 			final WebMarkupContainer sprintInputGroup,
-			final WebMarkupContainer hoursInputgroup) {
-		final DateTextField dateTextField = new DateTextField("sprintStartDate",
-				new PropertyModel<Date>(getSprintData(), "startDate"), 
-				new PatternDateConverter("MM/dd/yyyy", false));
-		DatePicker datePicker = new DatePicker();
-		datePicker.setShowOnFieldClick(true);
-		dateTextField.add(datePicker);
-		sprintInputGroup.add(dateTextField);
-		dateTextField.add(new OnChangeAjaxBehavior() {
+			final WebMarkupContainer hoursInputgroup,
+			final FeedbackPanel feedbackPanel) {
+		
+		Form form = new Form<Void>("inputForm");
+		form.setOutputMarkupId(true);
+		form.add(feedbackPanel);	
+		
+		addSprintStartDate(form);
+		
+		final TextField<Integer> workingDays = addSprintWorkingDaysTextField(form);
+
+		addSprintEndDateField(hoursInputgroup, form, workingDays);
+
+		addHoursPerDayDropdownField(form);
+
+		addTotalResourceTextField(form);
+		
+		addButtonToDisplayHoursInputFields(hoursInputgroup, feedbackPanel, form);
+		
+		sprintInputGroup.add(form);
+	}
+
+	@SuppressWarnings("all")
+	private void addButtonToDisplayHoursInputFields(
+			final WebMarkupContainer hoursInputgroup,
+			final FeedbackPanel feedbackPanel, final Form form) {
+		AjaxButton enterHours = new AjaxButton("enterActualslink") {
+			@Override
+			protected void onSubmit(AjaxRequestTarget target, Form form) {
+				feedbackPanel.setVisible(false);
+				executeJavascriptToClearLineChart(target);
+				SprintProcessor.populateEstimates(getSprintData());
+				getCurrentSession().cleanupFeedbackMessages();
+				if (!hoursInputgroup.isVisible()) {
+					hoursInputgroup.setVisible(true);
+				}
+				if (target != null) {
+					target.addComponent(hoursInputgroup);
+					target.addComponent(feedbackPanel);
+				}
+			}
+			@Override
+      protected void onError( AjaxRequestTarget target, Form<?> form )
+      {
+				feedbackPanel.setVisible(true);
+          target.addComponent( feedbackPanel );
+      }
+		};
+		form.add(enterHours);
+	}
+
+	@SuppressWarnings("all")
+	private void addTotalResourceTextField(Form form) {
+		final TextField<Integer> totalResources = new TextField<Integer>(
+				"numberOfResources", new PropertyModel<Integer>(getSprintData(),
+						"numberOfResources"));
+		totalResources.add(new OnChangeAjaxBehavior() {
 			@Override
 			protected void onUpdate(AjaxRequestTarget arg0) {}});
+		totalResources.setRequired(Boolean.TRUE);
+		totalResources.add(new RangeValidator<Integer>(1, 1000));
+		totalResources.setLabel(Model.of("Total Number of Resources"));
+		form.add(totalResources);
+	}
 
-		final TextField<Integer> workingDays = new TextField<Integer>(
-				"totalWorkingDays", new PropertyModel<Integer>(getSprintData(),
-						"totalWorkingDays"));
-		workingDays.add(new OnChangeAjaxBehavior() {
+	@SuppressWarnings("all")
+	private void addHoursPerDayDropdownField(Form form) {
+		final DropDownChoice<Integer> hoursPerDay = new DropDownChoice<Integer>(
+				"hoursPerDay", new PropertyModel<Integer>(this,
+						"sprintData.hoursPerDay"), HRS_PER_DAY);
+		hoursPerDay.setOutputMarkupId(true);
+		hoursPerDay.add(new OnChangeAjaxBehavior() {
 			@Override
-			protected void onUpdate(AjaxRequestTarget arg0) {}});
-		sprintInputGroup.add(workingDays);
+			protected void onUpdate(AjaxRequestTarget target) {}	});
+		hoursPerDay.setRequired(Boolean.TRUE);
+		hoursPerDay.setLabel(Model.of("Hours Per Day"));
+		
+		form.add(hoursPerDay);
+	}
 
+	@SuppressWarnings("all")
+	private void addSprintEndDateField(final WebMarkupContainer hoursInputgroup,
+			Form form, final TextField<Integer> workingDays) {
 		final DateTextField sprintEndDate = new DateTextField("sprintEndDate",
 				new PropertyModel<Date>(getSprintData(), "endDate"),
 				new PatternDateConverter("MM/dd/yyyy", false));
@@ -100,6 +167,7 @@ public class SprintGraphPage extends MyAppPage {
 		sprintEndDate.add(new OnChangeAjaxBehavior() {
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
+				executeJavascriptToClearLineChart(target);
 				SprintProcessor.populateTotalWorkingDays(getSprintData());
 				target.addComponent(workingDays);
 				if (hoursInputgroup.isVisible()) {
@@ -107,45 +175,41 @@ public class SprintGraphPage extends MyAppPage {
 				}
 				target.addComponent(hoursInputgroup);
 			}});
-		sprintInputGroup.add(sprintEndDate);
-
-		final DropDownChoice<Integer> hoursPerDay = new DropDownChoice<Integer>(
-				"hoursPerDay", new PropertyModel<Integer>(this,
-						"sprintData.hoursPerDay"), HRS_PER_DAY);
-		hoursPerDay.setOutputMarkupId(true);
-		hoursPerDay.add(new OnChangeAjaxBehavior() {
-			@Override
-			protected void onUpdate(AjaxRequestTarget arg0) {}	});
-
-		sprintInputGroup.add(hoursPerDay);
-
-		final TextField<Integer> totalResources = new TextField<Integer>(
-				"numberOfResources", new PropertyModel<Integer>(getSprintData(),
-						"numberOfResources"));
-		totalResources.add(new OnChangeAjaxBehavior() {
-			@Override
-			protected void onUpdate(AjaxRequestTarget arg0) {}});
-		sprintInputGroup.add(totalResources);
-		
+		sprintEndDate.setRequired(Boolean.TRUE);
+		sprintEndDate.setLabel(Model.of("Sprint End Date"));
+		form.add(sprintEndDate);
 	}
 
-	private void addHoursLink(final WebMarkupContainer sprintInputGroup,
-			final WebMarkupContainer hoursInputgroup) {
-		sprintInputGroup.add(new AjaxFallbackLink<Object>("enterActualslink") {
-			private static final long serialVersionUID = 1L;
-
+	@SuppressWarnings("all")
+	private TextField<Integer> addSprintWorkingDaysTextField(Form form) {
+		final TextField<Integer> workingDays = new TextField<Integer>(
+				"totalWorkingDays", new PropertyModel<Integer>(getSprintData(),
+						"totalWorkingDays"));
+		workingDays.add(new OnChangeAjaxBehavior() {
 			@Override
-			public void onClick(AjaxRequestTarget target) {
-				SprintProcessor.populateEstimates(getSprintData());
-				if (!hoursInputgroup.isVisible()) {
-					hoursInputgroup.setVisible(true);
-				}
-				if (target != null) {
-					target.addComponent(hoursInputgroup);
-				}
-				
-			}
-		});
+			protected void onUpdate(AjaxRequestTarget arg0) {}});
+		workingDays.setRequired(Boolean.TRUE);
+		workingDays.setLabel(Model.of("Sprint Working Days"));
+		workingDays.add(new RangeValidator<Integer>(1, 1000));
+		form.add(workingDays);
+		return workingDays;
+	}
+
+	@SuppressWarnings("all")
+	private void addSprintStartDate(Form form) {
+		final DateTextField dateTextField = new DateTextField("sprintStartDate",
+				new PropertyModel<Date>(getSprintData(), "startDate"), 
+				new PatternDateConverter("MM/dd/yyyy", false));
+		
+		DatePicker datePicker = new DatePicker();
+		datePicker.setShowOnFieldClick(true);
+		dateTextField.add(datePicker);
+		form.add(dateTextField);
+		dateTextField.add(new OnChangeAjaxBehavior() {
+			@Override
+			protected void onUpdate(AjaxRequestTarget arg0) {}});
+		dateTextField.setRequired(Boolean.TRUE);
+		dateTextField.setLabel(Model.of("Sprint Start Date"));
 	}
 
 	@SuppressWarnings("all")
@@ -164,10 +228,7 @@ public class SprintGraphPage extends MyAppPage {
 		AjaxButton saveButton = new AjaxButton("saveButton") {
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				/*if (raphaelBurnoutChart.isVisible()){
-					raphaelBurnoutChart.add(new SimpleAttributeModifier("class", "raphaelChartDiv"));
-				}
-				target.addComponent(raphaelBurnoutChart);*/
+				getCurrentSession().getFeedbackMessages().clear();
 				logger.info("Sprint Data: {}",getSprintData());
 				BurnoutChartGraphData graphData = SprintProcessor.getBurnoutChartGraphDataUsingRemainingHrs(getSprintData());
 				logger.info("Graph Data: {}", graphData);
@@ -194,6 +255,13 @@ public class SprintGraphPage extends MyAppPage {
       }
 		};
 	}
+	
+	private void executeJavascriptToClearLineChart(AjaxRequestTarget target){
+		if (target != null){
+			logger.info("clearRaphaelLineChart();");
+			target.appendJavascript("clearRaphaelLineChart();");	
+		}
+	}
 
 	/**
 	 * This method uses PageableListView to implement pagination with specified
@@ -203,7 +271,7 @@ public class SprintGraphPage extends MyAppPage {
 	 */
 	@SuppressWarnings("all")
 	public PageableListView<EffortData> getPageListView() {
-		return new PageableListView<EffortData>("effortData", (IModel<? extends List<? extends EffortData>>) this.listModel, 7) { //getEffortDataList()
+		return new PageableListView<EffortData>("effortData", (IModel<? extends List<? extends EffortData>>) this.listModel, 7) { 
 
 			@Override
 			protected void populateItem(final ListItem pageItem) {
